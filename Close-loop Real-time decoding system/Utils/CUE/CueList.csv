@@ -1,0 +1,16 @@
+soundIndex,decodeIndex,objects,path
+1,21,alarm,Utils/CUE/data\alarm.wav
+2,22,apple,Utils/CUE/data\apple.wav
+3,23,ball,Utils/CUE/data\ball.wav
+4,24,book,Utils/CUE/data\book.wav
+5,25,box,Utils/CUE/data\box.wav
+6,26,chair,Utils/CUE/data\chair.wav
+7,27,kiwi,Utils/CUE/data\kiwi.wav
+8,28,microphone,Utils/CUE/data\microphone.wav
+9,29,motorcycle,Utils/CUE/data\motorcycle.wav
+10,30,pepper,Utils/CUE/data\pepper.wav
+11,31,sheep,Utils/CUE/data\sheep.wav
+12,32,shoes,Utils/CUE/data\shoes.wav
+13,33,strawberry,Utils/CUE/data\strawberry.wav
+14,34,tomato,Utils/CUE/data\tomato.wav
+15,35,watch,Utils/CUE/data\watch.wav

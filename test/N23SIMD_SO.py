@@ -86,7 +86,7 @@ if __name__ == "__main__":
         "trans-Down", "1st-Up", "trans-1st-Up", 'Pre-SO'
     ]
     # Subjects
-    index_numbers  = ["subject_test_"+str(i) for i in range(13)]
+    index_numbers  = ["subject_test_"+str(i) for i in range(12)]
 
     Result_dict = {}                         # {subject: {event: accuracy}}
 

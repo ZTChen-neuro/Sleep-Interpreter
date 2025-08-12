@@ -115,7 +115,7 @@ if __name__ == "__main__":
     epochs = 200                                
 
     # List of test subjects
-    index_numbers = ["subject_test_"+str(i) for i in range(13)]
+    index_numbers = ["subject_test_"+str(i) for i in range(12)]
 
     # -------------------- Results dict ------------------------------- #
     Show_result = {}

@@ -85,7 +85,7 @@ if __name__ == "__main__":
 
     start_time   = time.time()
     # Subjects
-    subject_ids  = ["subject_test_"+str(i) for i in range(13)]
+    subject_ids  = ["subject_test_"+str(i) for i in range(12)]
     results_dict = {}   # {subject_id: accuracy}
     accuracies   = []   # list for averaging
 

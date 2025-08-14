@@ -72,7 +72,7 @@ if __name__ == "__main__":
     # -------------------------------------------------------------------------
 
     # ------------------------- model initialisation --------------------------
-    model_item       = SIMD(mode='normal')
+    model_item       = SIMD(mode='retrained')
     checkpoint_path  = os.path.join(checkpath, "N2N3_SIMD_Retrained.ckpt")
     model_item.load_weights(checkpoint_path)
     tf.config.run_functions_eagerly(False)   # ensure graph execution

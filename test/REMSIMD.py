@@ -87,7 +87,6 @@ if __name__ == "__main__":
     # Subjects
     subject_ids  = ["subject_test_"+str(i) for i in range(12)]
     results_dict = {}   # {subject_id: accuracy}
-    accuracies   = []   # list for averaging
 
     # ========================= EVALUATION LOOP ===============================
     for sid in subject_ids:
@@ -113,7 +112,6 @@ if __name__ == "__main__":
                 model_item, rand_img, rand_audio, sleep_eeg, labels
             )
 
-            logits     = tf.reduce_mean(logits, axis=0).numpy()
             preds_eq   = np.argmax(logits, axis=-1) == np.argmax(labels, axis=-1)
             correct_total += preds_eq.sum()
             sample_total  += preds_eq.size
@@ -122,16 +120,10 @@ if __name__ == "__main__":
 
         accuracy = correct_total / sample_total
         results_dict[sid] = accuracy
-        accuracies.append(accuracy)
         print(f"Subject {sid} Zeroshot Accuracy: {accuracy*100:.2f}%")
 
-    # ------------------------ aggregate statistics --------------------------
-    mean_acc = sum(accuracies) / len(accuracies)
-    print(f"Average Zeroshot Accuracy: {mean_acc*100:.2f}%")
-    print(f"Time taken: {time.time() - start_time:.2f}s")
-
-    results_dict['Average'] = mean_acc
     # ----------------------------- save -------------------------------------
+    print(f"Time taken: {time.time() - start_time:.2f}s")
     save_path = os.path.join(basepath, 'results', 'REMSIMD_Decode_Result.pickle')
     with open(save_path, 'wb') as f:
         pickle.dump(results_dict, f)

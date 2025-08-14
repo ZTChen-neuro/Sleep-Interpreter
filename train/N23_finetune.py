@@ -174,8 +174,8 @@ if __name__ == "__main__":
                 loss, logits = train_step(
                     model, img, aud, batch[2], batch[3], optimizer
                 )
-                # Convert to numpy for metric calc
-                loss, logits = loss.numpy(), logits.numpy()
+                # Metric calc
+
                 acc = np.mean(
                     np.argmax(logits, axis=-1) == np.argmax(batch[3], axis=-1)
                 )
@@ -198,7 +198,7 @@ if __name__ == "__main__":
                 loss, logits = validation_step(
                     model, img, aud, batch[2], batch[3]
                 )
-                loss, logits = loss.numpy(), logits.numpy()
+
                 acc = np.mean(
                     np.argmax(logits, axis=-1) == np.argmax(batch[3], axis=-1)
                 )
@@ -220,7 +220,7 @@ if __name__ == "__main__":
                 loss, logits = test_step(
                     model, img, aud, batch[2], batch[3]
                 )
-                loss, logits = loss.numpy(), logits.numpy()
+
                 acc = np.mean(
                     np.argmax(logits, axis=-1) == np.argmax(batch[3], axis=-1)
                 )

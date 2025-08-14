@@ -113,7 +113,6 @@ if __name__ == "__main__":
                     model_item, dummy_img, dummy_audio, sleep_eeg, labels
                 )
 
-                logits      = tf.reduce_mean(logits, axis=0).numpy()
                 preds_eq    = np.argmax(logits, axis=-1) == np.argmax(labels, axis=-1)
 
                 total_correct += preds_eq.sum()

@@ -23,9 +23,9 @@ if __name__ == "__main__":
 # ---------------------------------------------------------------------------
 
 # ---------------------------------------------------------------------------
-# One training step (graph‑compiled with @tf.function)
+# One training step
 # ---------------------------------------------------------------------------
-@tf.function
+
 def train_step(model, sleep, category, optimizer):
     """Perform forward + backward pass on one mini‑batch."""
     with tf.GradientTape() as tape:
@@ -78,7 +78,7 @@ if __name__ == "__main__":
     optimizer = tfa.optimizers.AdamW(learning_rate=8e-5, weight_decay=2e-5)
 
     # -------------------- Dataset --------------------
-    pickle_files = sorted(os.path.join(datapath, f) for f in os.listdir(datapath) if f.startswith('sleep'))
+    pickle_files = sorted(os.path.join(datapath, f) for f in os.listdir(datapath) if f.startswith('sleep'))[0]
     train_dataset = load_data(pickle_files, batch_size)
 
     # Disable eager inside loops for performance
@@ -94,8 +94,8 @@ if __name__ == "__main__":
         print(f"\nStart of epoch {epoch}")
         tic = time.time()
 
-        epoch_loss_sum  = 0.0
-        epoch_acc_list  = []
+        Accuracy_train = []
+        train_losses = 0.0
         
         for sleep_eeg, label in train_dataset:
             Loss_value = [] ; Result_Matrix = []

@@ -87,7 +87,7 @@ def get_dataset_from_tfrecords(
 # ---------------------------------------------------------------------------
 # One training / inference step
 # ---------------------------------------------------------------------------
-@tf.function
+
 def train_step(model, data, category_id, label, optimizer):
     """Single gradient‑descent step for one mini‑batch."""
     with tf.GradientTape() as tape:

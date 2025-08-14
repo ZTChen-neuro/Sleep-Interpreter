@@ -78,9 +78,9 @@ def get_dataset_from_tfrecords(record_path, batch_size, shuffle_buffer_size, cyc
     return ds
 
 # ---------------------------------------------------------------------------
-# One training step (graph‑compiled with @tf.function)
+# One training step
 # ---------------------------------------------------------------------------
-@tf.function
+
 def train_step(model, img, aud_awake, sleep, category, optimizer):
     """Perform forward + backward pass on one mini‑batch."""
     with tf.GradientTape() as tape:

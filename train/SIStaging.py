@@ -22,7 +22,7 @@ import tensorflow_addons as tfa
 #
 # NOTE: Paths in this file assume the following folder structure
 #   repo_root/
-#       data/Sleep Staging/{train,test}/subject*/whole*
+#       data/SI Staging/Train/Whole*.tfrecords
 #       results/Staging checkpoint/
 # ---------------------------------------------------------------------------
 
@@ -98,36 +98,6 @@ def train_step(model, data, category_id, label, optimizer):
     return loss_value, preds
 
 
-@tf.function
-def test_step(model, data, category_id, label):
-    """Forward pass without gradient computation."""
-    loss_value, preds = model((data, category_id, label), training=False)
-    return loss_value, preds
-
-
-# ---------------------------------------------------------------------------
-# Pickled dataset loader (used for the held‑out test set)
-# ---------------------------------------------------------------------------
-
-def load_data(path, batch_size):
-    """Load *.pickle files created by the preprocessing script."""
-    with open(path, 'rb') as f:
-        dataset = pickle.load(f)
-
-    category, label, sleep_data = [], [], []
-    for sample in dataset:
-        category.append(np.eye(4)[sample['category']])
-        label.append(sample['label'])
-        sleep_data.append(sample['data'])
-
-    category   = np.asarray(category)
-    label      = np.asarray(label)
-    sleep_data = np.asarray(sleep_data)
-
-    ds = tf.data.Dataset.from_tensor_slices((sleep_data, category, label))
-    return ds.shuffle(len(category)).batch(batch_size).prefetch(2)
-
-
 # ---------------------------------------------------------------------------
 # Main training routine
 # ---------------------------------------------------------------------------
@@ -157,21 +127,9 @@ if __name__ == "__main__":
 
     # -------------------- Data paths --------------------
     path_train_file = os.path.join(datapath, "Train")
-    path_test_file  = os.path.join(datapath, "Test")
 
-    # Get *all* subject‑level TFRecords under {Train,Test}/subject*/Whole*
-    path_train_data = sorted(
-        os.path.join(root, fname)
-        for root, _, files in os.walk(path_train_file)
-        for fname in files if fname.startswith("Whole")
-    )
-    path_test_data = sorted(
-        os.path.join(root, fname)
-        for root, _, files in os.walk(path_test_file)
-        for fname in files if fname.startswith("Whole")
-    )
-
-    test_dataset = load_data(path_test_data, batch_size)
+    # Get *all* TFRecords under Train/Whole*.tfrecords
+    path_train_data = sorted(os.path.join(path_train_file, f) for f in os.listdir(path_train_file) if f.startswith('Whole'))
 
     # -------------------- Optimizer --------------------
     optimizer = tfa.optimizers.AdamW(
@@ -180,8 +138,8 @@ if __name__ == "__main__":
     )
 
     # -------------------- Metrics containers --------------------
-    train_loss, test_loss = [], []
-    train_accuracy, test_accuracy = [], []
+    train_loss = []
+    train_accuracy = []
 
     # Disable eager for performance (tf.function already used above)
     tf.config.run_functions_eagerly(False)
@@ -228,44 +186,13 @@ if __name__ == "__main__":
         epoch_train_acc  = np.mean(epoch_train_acc)
         print("Training Step Finished.")
 
-        # -------------------- Validation --------------------
-        epoch_test_losses, epoch_test_acc = 0.0, []
-
-        for step, (x, cat, y) in enumerate(test_dataset):
-            losses, preds = [], []
-            for model in individual_models:
-                l, p = test_step(model, x, cat, tf.squeeze(y))
-                losses.append(l)
-                preds.append(p)
-            loss_value  = tf.reduce_mean(losses, axis=0).numpy()
-            pred_logits = tf.reduce_mean(preds,  axis=0).numpy()
-
-            acc_vec = np.argmax(pred_logits, -1) == np.argmax(cat, -1)
-            total   = np.argmax(cat, -1)
-
-            # Per‑class accuracy bookkeeping
-            for i, ok in enumerate(acc_vec):
-                lbl = idx_to_label[total[i]]
-                total_dict[lbl] += 1
-                if ok:
-                    correct_dict[lbl] += 1
-
-            epoch_test_acc.append(np.mean(acc_vec))
-            epoch_test_losses += loss_value
-
-        epoch_test_loss = epoch_test_losses / len(epoch_test_acc)
-        epoch_test_acc  = np.mean(epoch_test_acc)
-
         # -------------------- Logging --------------------
         if np.isnan(epoch_train_loss):
             print("NaN encountered – aborting training.")
             break
 
-        print("test Step Finished.")
         print(f'Training Loss over epoch: {epoch_train_loss:.4f}')
         print(f'Training Accuracy over epoch: {epoch_train_acc*100:.2f}')
-        print(f'Test Loss: {epoch_test_loss:.4f}')
-        print(f'Test Accuracy over epoch: {epoch_test_acc*100:.2f}')
         print(f'Time taken: {time.time() - tic:.2f}s')
 
         # -------------------- Checkpoint each model --------------------
@@ -277,9 +204,6 @@ if __name__ == "__main__":
         # -------------------- Log histories --------------------
         train_loss.append(epoch_train_loss)
         train_accuracy.append(epoch_train_acc)
-        test_loss.append(epoch_test_loss)
-        test_accuracy.append(epoch_test_acc)
-
 
     # -------------------------------------------------------------------
     # Post‑training: save ensemble

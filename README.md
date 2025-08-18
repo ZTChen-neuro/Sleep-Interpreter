@@ -78,8 +78,11 @@ This repository contains code and resources for our **real‑time sleep decoding
    └─ model.py               # Common model utilities
 ```
 ---
+
 ## Example data for staging label
+
 Raw data from one train subject and one test subject were released at the following link to verify the precision of the staging label: [example_data](https://www.dropbox.com/scl/fo/117q6pzzhyh1m2ss2qef2/AOWz6zXSqRg30ETmXO--syQ?rlkey=7nmsmiogb3qpqrjxx9asd4bc8&st=swrviidk&dl=0)
+
 ---
 ## Setup
 

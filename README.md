@@ -28,6 +28,7 @@ This repository contains code and resources for our **real‑time sleep decoding
 │  ├─ SI Main Train/         # Preprocessed training data for Lasso GLM model (not included, in "dropbox")
 │  ├─ SI Main Train_pickle/  # Preprocessed training data in pickle format for REM model SISD (not included, in "dropbox")
 │  ├─ SI Main Train_tfrecords/ # Preprocessed training data in tfrecord format for NREM and REM model (not included, in "dropbox")
+│  ├─ SI Staging/            # Preprocessed staging data in pickle format for staging model (not included, in "dropbox")
 │  └─ SI Staging Label/      # Expert-labelled sleep stages
 │
 ├─ environment/

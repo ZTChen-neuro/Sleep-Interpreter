@@ -27,7 +27,7 @@ This repository contains code and resources for our **real‑time sleep decoding
 │  ├─ SI Main Test/          # Test data (not included, in "OSF")
 │  ├─ SI Main Train/         # Preprocessed training data for Lasso GLM model (not included, in "OSF")
 │  ├─ SI Main Train_pickle/  # Preprocessed training data in pickle format for REM model SISD (not included, in "OSF")
-│  ├─ SI Main Train_tfrecords/ # Preprocessed training data in tfrecord format for NREM and REM model (not included, in "dropbox")
+│  ├─ SI Main Train_tfrecords/ # Preprocessed training data in tfrecord format for NREM and REM model (not included, in "OSF")
 │  └─ SI Staging Label/      # Expert-labelled sleep stages
 │
 ├─ environment/

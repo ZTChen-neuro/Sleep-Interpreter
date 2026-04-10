@@ -1,0 +1,7 @@
+# file
+*.asv
+
+# dir
+/__pycache__
+/__image__
+
